@@ -1,6 +1,6 @@
 name: 'Block fixup commit merge'
-description: 'Block merge of Pull Requests containing fixup commits, so you do not forget to squash/autosquash.'
-author: 'Brad Erickson'
+description: 'Block merge of PRs containing fixup, squash, and merge commits.'
+author: 'Brad Erickson, updated for Gastronomous Technologies by Jackson Brown'
 runs:
   using: 'docker'
   image: 'Dockerfile'

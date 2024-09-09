@@ -21,7 +21,7 @@ main() {
   COMMIT_LIST=`/usr/bin/git log --pretty=format:%s __ci_base..__ci_pr`
 
   FIXUP_COUNT=`echo $COMMIT_LIST | grep fixup! | wc -l || true`
-  echo "Fixup! commits: $FIXUP_COUNT"
+  echo "fixup! commits: $FIXUP_COUNT"
   if [[ "$FIXUP_COUNT" -gt "0" ]]; then
     /usr/bin/git log --pretty=format:%s __ci_base..__ci_pr | grep fixup!
     echo "failing..."
@@ -29,9 +29,17 @@ main() {
   fi
 
   SQUASH_COUNT=`echo $COMMIT_LIST | grep squash! | wc -l || true`
-  echo "Squash! commits: $SQUASH_COUNT"
+  echo "squash! commits: $SQUASH_COUNT"
   if [[ "$SQUASH_COUNT" -gt "0" ]]; then
     /usr/bin/git log --pretty=format:%s __ci_base..__ci_pr | grep squash!
+    echo "failing..."
+    exit 1
+  fi
+
+  MERGE_COUNT=`echo $COMMIT_LIST | grep "Merge pull request\|Merge branch" | wc -l || true`
+  echo "Merge pull request/Merge branch commits: $MERGE_COUNT"
+  if [[ "$MERGE_COUNT" -gt "0" ]]; then
+    /usr/bin/git log --pretty=format:%s __ci_base..__ci_pr | grep "Merge pull request\|Merge branch"
     echo "failing..."
     exit 1
   fi
