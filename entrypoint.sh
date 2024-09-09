@@ -36,10 +36,10 @@ main() {
     exit 1
   fi
 
-  MERGE_COUNT=`echo $COMMIT_LIST | grep merge! | wc -l || true`
-  echo "merge! commits: $MERGE_COUNT"
+  MERGE_COUNT=`echo $COMMIT_LIST | grep "Merge pull request\|Merge branch" | wc -l || true`
+  echo "Merge pull request/Merge branch commits: $MERGE_COUNT"
   if [[ "$MERGE_COUNT" -gt "0" ]]; then
-    /usr/bin/git log --pretty=format:%s __ci_base..__ci_pr | grep merge!
+    /usr/bin/git log --pretty=format:%s __ci_base..__ci_pr | grep "Merge pull request\|Merge branch"
     echo "failing..."
     exit 1
   fi
