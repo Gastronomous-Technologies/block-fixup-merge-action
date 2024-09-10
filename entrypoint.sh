@@ -43,6 +43,15 @@ main() {
     echo "failing..."
     exit 1
   fi
+
+  regex='^[A-Z]' #commit messages should start with a capital letter
+  LOWER_CASE_COUNT=`echo $COMMIT_LIST | grep -Ev $regex | wc -l || true`
+  echo "Commits not starting with a capital letter: $LOWER_CASE_COUNT"
+  if [[ "$LOWER_CASE_COUNT" -gt "0" ]]; then
+    /usr/bin/git log --pretty=format:%s __ci_base..__ci_pr | grep -Ev $regex
+    echo "failing..."
+    exit 1
+  fi
 }
 
 main
