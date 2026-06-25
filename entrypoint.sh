@@ -20,7 +20,7 @@ main() {
   # Get the list before the "|| true" to fail the script when the git cmd fails.
   COMMIT_LIST=`/usr/bin/git log --pretty=format:%s __ci_base..__ci_pr`
 
-  FIXUP_COUNT=`echo $COMMIT_LIST | grep fixup! | wc -l || true`
+  FIXUP_COUNT=`echo "$COMMIT_LIST" | grep fixup! | wc -l || true`
   echo "fixup! commits: $FIXUP_COUNT"
   if [[ "$FIXUP_COUNT" -gt "0" ]]; then
     /usr/bin/git log --pretty=format:%s __ci_base..__ci_pr | grep fixup!
@@ -28,7 +28,7 @@ main() {
     exit 1
   fi
 
-  SQUASH_COUNT=`echo $COMMIT_LIST | grep squash! | wc -l || true`
+  SQUASH_COUNT=`echo "$COMMIT_LIST" | grep squash! | wc -l || true`
   echo "squash! commits: $SQUASH_COUNT"
   if [[ "$SQUASH_COUNT" -gt "0" ]]; then
     /usr/bin/git log --pretty=format:%s __ci_base..__ci_pr | grep squash!
@@ -36,7 +36,7 @@ main() {
     exit 1
   fi
 
-  MERGE_COUNT=`echo $COMMIT_LIST | grep "Merge pull request\|Merge branch" | wc -l || true`
+  MERGE_COUNT=`echo "$COMMIT_LIST" | grep "Merge pull request\|Merge branch" | wc -l || true`
   echo "Merge pull request/Merge branch commits: $MERGE_COUNT"
   if [[ "$MERGE_COUNT" -gt "0" ]]; then
     /usr/bin/git log --pretty=format:%s __ci_base..__ci_pr | grep "Merge pull request\|Merge branch"
@@ -45,7 +45,7 @@ main() {
   fi
 
   regex='^[A-Z]' #commit messages should start with a capital letter
-  LOWER_CASE_COUNT=`echo $COMMIT_LIST | grep -Ev $regex | wc -l || true`
+  LOWER_CASE_COUNT=`echo "$COMMIT_LIST" | grep -Ev $regex | wc -l || true`
   echo "Commits not starting with a capital letter: $LOWER_CASE_COUNT"
   if [[ "$LOWER_CASE_COUNT" -gt "0" ]]; then
     /usr/bin/git log --pretty=format:%s __ci_base..__ci_pr | grep -Ev $regex
